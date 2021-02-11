@@ -105,6 +105,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    clearBtn.addEventListener('click', clearAllTasks);
+    //clear tasks
+    function clearAllTasks() {
+        //Create the transaction and object store
+        let transaction = DB.transaction("tasks", "readwrite");
+        let tasks = transaction.objectStore("tasks");
+        // clear the the table
+        tasks.clear();
+        //repaint the UI
+        displayTaskList();
+        console.log("Tasks Cleared !!!");
+    }
+
+    taskList.addEventListener('click', removeTask);
+
+    function removeTask(e) {
+        if (e.target.parentElement.classList.contains('delete-item')) {
+            if (confirm('Are you sure about removing this task?')) {
+                // get the task id
+                let taskID = Number(e.target.parentElement.parentElement.getAttribute('data-task-id'));
+                // use a transaction
+                let transaction = DB.transaction(['tasks'], 'readwrite');
+                let objectStore = transaction.objectStore('tasks');
+                objectStore.delete(taskID);
+
+                transaction.oncomplete = () => {
+                    e.target.parentElement.parentElement.remove();
+                    console.log(`Task removed`);
+                }
+            }
+        }
+
+    }
+    
+
 
 
 });
