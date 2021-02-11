@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', loadTasksfromDB);
+
 function addToDatabase(newTask) {
     let listofTasks;
     if(localStorage.getItem("tasks") == null) {
@@ -17,4 +19,20 @@ function loadfromDB() {
         listOfTasks = JSON.parse(localStorage.getItem('tasks'));
     }
     return listOfTasks;
+}
+
+function loadTasksfromDB() {
+    let taskLists = loadfromDB();
+    if (taskLists.length != 0) {
+        taskLists.forEach((eachTask) => {
+            const li = document.createElement('li');
+            li.className = 'collection-item';
+            li.appendChild(document.createElement('a'));
+            const link = document.createElement('a');
+            link.className = 'delete-item secondary-content';
+            link.innerHTML = '<i class="fa fa-remove"></i>';
+            li.appendChild(link);
+            taskLists.appendChild(li);
+        });
+    }
 }
