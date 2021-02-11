@@ -1,0 +1,18 @@
+i {
+    color: red;
+}
+.addBtn, .subtractBtn, .multiplyBtn, .divideBtn, .maxBtn, .minBtn, .aveBtn, .sqrBtn {
+    height: 3em;
+    width: 6em;
+    text-align: center;
+    background-color: black;
+    color: white;
+    margin-bottom: 2em;
+}
+
+.numbers {
+    margin: 3em;
+}
+select {
+    display: block;
+}
