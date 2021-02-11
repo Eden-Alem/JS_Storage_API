@@ -65,5 +65,46 @@ document.addEventListener('DOMContentLoaded', () => {
         transaction.onerror = () => { console.log('There was an error, try again!'); }
     }
 
+    function displayTaskList() {
+        while(taskList.firstChild) { 
+            taskList.removeChild(taskList.firstChild); 
+        }
+
+        let objectStore = DB.transaction("tasks").objectStore("tasks");
+
+        objectStore.openCursor().onsuccess = function(e) {
+            let cursor = e.target.result;
+            
+            if (cursor) {
+                const li = document.createElement('li');
+                li.className = 'collection_item';          
+
+                const link = document.createElement('a');
+                link.className = 'delete-item secondary-content';
+                link.innerHTML = '<i class="fa fa-remove"></i>';    
+                link.innerHTML = `
+                <i class="fa fa-remove"></i>  &nbsp;
+                <a href=".//edit.html?id=${cursor.value.id}"><i class="fa fa-edit"></i> </a> `;              
+                
+
+                if (isAscending) {
+                    taskList.appendChild(li);  
+                    li.appendChild(link); 
+                }
+                else {        
+                    taskList.insertBefore(li, taskList.children[0]);
+                    li.appendChild(link);                 
+                }                
+                
+                // Create text node and append it
+                li.setAttribute('data-task-id', cursor.value.id);
+                li.appendChild(document.createTextNode(cursor.value.taskname));                   
+
+                cursor.continue();
+            }
+        }
+    }
+
+
 
 });
