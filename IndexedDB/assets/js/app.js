@@ -9,7 +9,6 @@ const desc = document.querySelector('#drop');
 let isAscending = true;
 
 let DB;
-
 document.addEventListener('DOMContentLoaded', () => {
     let TasksDB = indexedDB.open('tasks', 2);
     TasksDB.onsuccess = function() {
@@ -139,7 +138,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
     
+    filter.addEventListener('keyup', filterTasks);
+    function filterTasks(e) {
+        let collections = document.querySelectorAll('.collection_item');
+        collections.forEach(element => {
+            element.style.display = (element.textContent.toUpperCase().indexOf(filter.value.toUpperCase()) > -1) ? 'block' : 'none';
+        });
+    }
 
+    desc.addEventListener('change', reverseOrder);
+    function reverseOrder(e) {
+        const collectionsList = document.querySelectorAll('.collection_item');
+        const order = new Array();
+        for (let index = 0; index < collectionsList.length; index++) {
+            order.push(collectionsList[index]);         
+        }
+        order.reverse();
 
-
+        for (let index = 0; index < collectionsList.length; index++) { 
+            taskList.appendChild(order[index]); 
+        }    
+        
+        isAscending = !isAscending;
+    }
 });
+
